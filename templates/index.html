@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WIKI-QUEST - Search and Discover</title>
+    <style>
+      body {
+        text-align: center;
+        margin-top: 200px;
+        font-family: Arial, sans-serif;
+        background: silver url("static/bgimage.jpg") center center fixed;
+        background-size: cover;
+      }
+
+      h1 {
+        font-size: 40px;
+        color: white;
+        margin-bottom: 10px;
+        animation: fade-in 3s ease-in-out;
+      }
+
+      p.tagline {
+        font-size: 18px;
+        color: white;
+        margin-bottom: 40px;
+        animation: fade-in 1s ease-in-out;
+      }
+
+      .search-form {
+        display: inline-block;
+        animation: slide-in 1s ease-in-out;
+      }
+
+      .search-form input[type="text"] {
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s;
+        font-size: 16px;
+        width: 300px;
+      }
+
+      .search-form input[type="text"]:focus {
+        box-shadow: 0 0 8px #4285f4;
+      }
+
+      .search-form input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #4285f4;
+        color: white;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+        font-size: 16px;
+        animation: pulse 2s infinite;
+      }
+
+      .search-form input[type="submit"]:hover {
+        background-color: #3367d6;
+        animation: none; /* Disable animation on hover */
+      }
+
+      .question-input {
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s;
+        font-size: 16px;
+        width: 300px;
+      }
+
+      .ask-button {
+        padding: 10px 20px;
+        background-color: #4285f4;
+        color: white;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+        font-size: 16px;
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slide-in {
+        from {
+          transform: translateX(-200px);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      /* Add animation to the WIKI-QUEST title */
+      @keyframes title-animation {
+        0% {
+          transform: rotateX(0) rotateY(0) rotateZ(0) scale(1);
+        }
+        25% {
+          transform: rotateX(360deg) rotateY(0) rotateZ(0) scale(1.2);
+        }
+        50% {
+          transform: rotateX(360deg) rotateY(360deg) rotateZ(0) scale(1);
+        }
+        75% {
+          transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg) scale(1.2);
+        }
+        100% {
+          transform: rotateX(0) rotateY(0) rotateZ(0) scale(1);
+        }
+      }
+
+      h1.title-animation {
+        animation: title-animation 5s infinite;
+      }
+
+      /* Add animation to the tagline */
+      @keyframes tagline-animation {
+        0% {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      p.tagline.tagline-animation {
+        animation: tagline-animation 1s;
+      }
+
+      /* Logo */
+      .logo {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 150px; /* Adjust the width as needed */
+        height: auto; /* Maintain aspect ratio */
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Text Color */
+      .content h2,
+      .content p {
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title-animation">WIKI-QUEST</h1>
+    <p class="tagline tagline-animation">Search and discover</p>
+
+    <img src="static/logo.png" class="logo" alt="Logo" />
+
+    <form action="/" method="POST" class="search-form">
+      <input
+        type="text"
+        id="topic"
+        name="topic"
+        placeholder="Enter a topic"
+        required
+      />
+      <input type="submit" value="Search" />
+    </form>
+
+    {% if content %}
+    <div class="content">
+      <h2 style="color: white">Topic: {{ topic }}</h2>
+      <h2 style="color: white">Ask a Question</h2>
+      <form action="/answer" method="POST">
+        <input type="hidden" name="content" value="{{ content }}" />
+        <input type="hidden" name="topic" value="{{ topic }}" />
+        <label for="question" style="color: white">Question:</label>
+        <input
+          type="text"
+          id="question"
+          name="question"
+          class="question-input"
+          required
+        />
+        <input type="submit" value="Ask" class="ask-button" />
+      </form>
+
+      {% if answer %}
+      <h2 style="color: white">Question: {{ question }}</h2>
+      <h2 style="color: white">Answer:</h2>
+      <p style="color: white">{{ answer }}</p>
+      {% endif %}
+    </div>
+    {% elif error %}
+    <p style="color: white">No Wikipedia page found for the given topic.</p>
+    {% endif %}
+  </body>
+</html>
