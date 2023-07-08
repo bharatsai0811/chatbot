@@ -47,4 +47,4 @@ def get_answer():
     answer = answer_question(question, content)
     return render_template('index.html', topic=topic, content=content, question=question, answer=answer)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0",port=5000)
